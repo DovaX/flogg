@@ -1,4 +1,4 @@
-# flog
+# flogg
 Improved logging system for Python
 
 ## Table of Contents
@@ -13,18 +13,45 @@ Improved logging system for Python
 - [Configuration](#configuration)
 - [Developer Mode](#developer-mode)
 - [Examples](#examples)
+- [Backward Compatibility](#backward-compatibility)
 
 ## Import
 
+### Recommended Usage (flogg)
+
 ```python
-import forloop_modules.flog as flog
+import flogg
 # or
-from flog_pkg.flog import FlogLogger, FlogLevel
+from flogg import FlogLogger, FlogLevel, info, error, warning, debug, etc.
+```
+
+### Backward Compatibility (forloop_modules.flog)
+
+```python
+# Still works for backward compatibility
+import forloop_modules.flog as flog
 ```
 
 ## Basic Usage
 
+### Using flogg (Recommended)
+
 ```python
+import flogg
+
+flogg.debug("Debug message")
+flogg.minor_info("Minor info message")
+flogg.info("Info message")
+flogg.warning("Warning message")
+flogg.error("Error message")
+flogg.critical("Critical message")
+```
+
+### Using forloop_modules.flog (Backward Compatible)
+
+```python
+import forloop_modules.flog as flog
+
 flog.debug("Debug message")
 flog.minor_info("Minor info message")
 flog.info("Info message")
@@ -46,40 +73,54 @@ Log levels from lowest to highest:
 
 ## Runtime Log Level Configuration
 
-### Using the Logger Instance (flog_pkg)
+### Using the Logger Instance (flogg - Recommended)
 
 ```python
+import flogg
+
 # Set default log level (using enum)
-flog.logger.set_log_level(flog.FlogLevel.DEBUG)
+flogg.logger.set_log_level(flogg.FlogLevel.DEBUG)
 
 # Set log level using string (case-insensitive)
-flog.logger.set_log_level("debug")
-flog.logger.set_log_level("INFO")
-flog.logger.set_log_level("Warning")
+flogg.logger.set_log_level("debug")
+flogg.logger.set_log_level("INFO")
+flogg.logger.set_log_level("Warning")
 
 # Set log level for specific class
-flog.logger.set_log_level(flog.FlogLevel.INFO, class_name="MyClass")
-flog.logger.set_log_level("info", class_name="MyClass")
+flogg.logger.set_log_level(flogg.FlogLevel.INFO, class_name="MyClass")
+flogg.logger.set_log_level("info", class_name="MyClass")
 
 # Get current log level
-level = flog.logger.get_log_level()
-level = flog.logger.get_log_level(class_name="MyClass")
+level = flogg.logger.get_log_level()
+level = flogg.logger.get_log_level(class_name="MyClass")
 
 # Invalid log level raises ValueError
-flog.logger.set_log_level("invalid")  # Raises ValueError with helpful message
+flogg.logger.set_log_level("invalid")  # Raises ValueError with helpful message
 ```
 
 ### Direct FLOG_CONFIG Manipulation (works in both versions)
 
 ```python
+import flogg
+
 # Set default log level
-flog.FLOG_CONFIG["DEFAULT"] = flog.FlogLevel.DEBUG
+flogg.FLOG_CONFIG["DEFAULT"] = flogg.FlogLevel.DEBUG
 
 # Set log level for specific class
-flog.FLOG_CONFIG["MyClass"] = flog.FlogLevel.INFO
+flogg.FLOG_CONFIG["MyClass"] = flogg.FlogLevel.INFO
 
 # Get current log level
-level = flog.FLOG_CONFIG.get("DEFAULT", flog.FlogLevel.WARNING)
+level = flogg.FLOG_CONFIG.get("DEFAULT", flogg.FlogLevel.WARNING)
+```
+
+### Backward Compatible (forloop_modules.flog)
+
+```python
+import forloop_modules.flog as flog
+
+# All the same methods work
+flog.logger.set_log_level(flog.FlogLevel.DEBUG)
+flog.FLOG_CONFIG["DEFAULT"] = flog.FlogLevel.INFO
 ```
 
 ## Using in Classes
@@ -87,12 +128,14 @@ level = flog.FLOG_CONFIG.get("DEFAULT", flog.FlogLevel.WARNING)
 The logger automatically detects the class name from which it's called:
 
 ```python
+import flogg
+
 class MyClass:
     def __init__(self):
-        flog.info("Initializing MyClass")  # Automatically detects class name
+        flogg.info("Initializing MyClass")  # Automatically detects class name
     
     def my_method(self):
-        flog.debug("Debug message from method")
+        flogg.debug("Debug message from method")
 ```
 
 ## Using Outside Classes
@@ -100,7 +143,9 @@ class MyClass:
 When called outside of a class, no class name is shown in the output:
 
 ```python
-flog.info("This is a standalone message")  # No class name in output
+import flogg
+
+flogg.info("This is a standalone message")  # No class name in output
 ```
 
 ## Message Categories
@@ -108,11 +153,13 @@ flog.info("This is a standalone message")  # No class name in output
 Filter messages by category (default: "*" = all):
 
 ```python
+import flogg
+
 # Log with a specific category
-flog.info("Message", message_category="important")
+flogg.info("Message", message_category="important")
 
 # Configure which categories to display
-flog.MESSAGE_CATEGORIES = ["important", "errors"]
+flogg.MESSAGE_CATEGORIES = ["important", "errors"]
 ```
 
 ## Available Enums
@@ -145,8 +192,10 @@ Dictionary mapping class names to log levels:
 Example:
 
 ```python
-flog.FLOG_CONFIG["DEFAULT"] = flog.FlogLevel.INFO
-flog.FLOG_CONFIG["MyClass"] = flog.FlogLevel.DEBUG
+import flogg
+
+flogg.FLOG_CONFIG["DEFAULT"] = flogg.FlogLevel.INFO
+flogg.FLOG_CONFIG["MyClass"] = flogg.FlogLevel.DEBUG
 ```
 
 ## Developer Mode
@@ -159,40 +208,69 @@ flog.FLOG_CONFIG["MyClass"] = flog.FlogLevel.DEBUG
 ### Basic Logging
 
 ```python
-flog.info("Application started")
-flog.warning("Low memory detected")
-flog.error("Failed to connect to database")
+import flogg
+
+flogg.info("Application started")
+flogg.warning("Low memory detected")
+flogg.error("Failed to connect to database")
 ```
 
 ### Runtime Configuration
 
 ```python
+import flogg
+
 # Enable debug logging
-flog.logger.set_log_level(flog.FlogLevel.DEBUG)
-flog.debug("This will now be visible")
+flogg.logger.set_log_level(flogg.FlogLevel.DEBUG)
+flogg.debug("This will now be visible")
 ```
 
 ### Class-Specific Configuration
 
 ```python
+import flogg
+
 # Set debug level for a specific class
-flog.FLOG_CONFIG["DatabaseHandler"] = flog.FlogLevel.DEBUG
+flogg.FLOG_CONFIG["DatabaseHandler"] = flogg.FlogLevel.DEBUG
 ```
 
 ### Using in a Class
 
 ```python
+import flogg
+
 class DeploymentSupervisor:
     def supervise(self):
-        flog.info("Starting supervision")
-        flog.debug("Checking deployments...")
+        flogg.info("Starting supervision")
+        flogg.debug("Checking deployments...")
 ```
 
 ## Help Method
 
-You can also view this help in Python:
+You can view help in Python:
 
 ```python
+# Using flogg (recommended)
+import flogg
+flogg.help()
+
+# Or using backward compatible import
 import forloop_modules.flog as flog
 flog.help()
+```
+
+## Backward Compatibility
+
+The `forloop_modules.flog` module is maintained for backward compatibility. It imports everything from `flogg`, so all existing code using `import forloop_modules.flog as flog` will continue to work without any changes.
+
+```python
+# Old code - still works!
+import forloop_modules.flog as flog
+flog.info("This still works")
+flog.logger.set_log_level(flog.FlogLevel.DEBUG)
+
+# New code - recommended
+import flogg
+flogg.info("This is the new way")
+flogg.logger.set_log_level(flogg.FlogLevel.DEBUG)
 ```

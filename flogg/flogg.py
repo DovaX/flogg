@@ -304,19 +304,21 @@ class FlogLogger:
             self._flog(message, class_name, message_category=message_category)
     
     def help(self):
-        """Display help information about using flog"""
+        """Display help information about using flogg"""
         help_text = """
-FLOG - Logging Help Guide
+FLOGG - Logging Help Guide
 
-For detailed documentation, please see the README.md file in the flog_pkg directory.
+For detailed documentation, please see the README.md file in the flogg_pkg directory.
 
 Quick Reference:
-    Import:        import forloop_modules.flog as flog
-    Basic usage:   flog.info("message"), flog.error("message"), etc.
-    Log levels:    DEBUG, MINORINFO, INFO, WARNING, ERROR, CRITICAL
-    Set level:     flog.logger.set_log_level(flog.FlogLevel.DEBUG)
-    Get level:     flog.logger.get_log_level()
-    Help:          flog.help() or see README.md
+    Import (recommended):  import flogg
+    Import (compatible):   import forloop_modules.flog as flog
+    Basic usage:           flogg.info("message"), flogg.error("message"), etc.
+    Log levels:            DEBUG, MINORINFO, INFO, WARNING, ERROR, CRITICAL
+    Set level:             flogg.logger.set_log_level(flogg.FlogLevel.DEBUG)
+                           flogg.logger.set_log_level("debug")  # Also supports strings
+    Get level:             flogg.logger.get_log_level()
+    Help:                  flogg.help() or see README.md
 """
         print(help_text)
 

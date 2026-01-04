@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
     
 setuptools.setup(
     name='flogg',
-    version='1.0.0',
+    version='1.0.1',
     author='DovaX',
     author_email='dovax.ai@gmail.com',
     description='Improved logging system for Python',
